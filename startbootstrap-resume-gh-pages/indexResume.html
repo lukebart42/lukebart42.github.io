@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luke Bartholomew — Résumé</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    #F7F4EF;
+      --ink:      #1A1714;
+      --warm:     #8C7B6B;
+      --accent:   #C4956A;
+      --rule:     #DDD5C8;
+      --section-gap: 5rem;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 3rem;
+      background: rgba(247,244,239,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: .8rem;
+      font-weight: 400;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--warm);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 1.5px;
+      background: var(--ink); transition: all .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 58px; left: 0; right: 0;
+      background: var(--cream);
+      border-bottom: 1px solid var(--rule);
+      padding: 1.5rem 2rem;
+      z-index: 99;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: .82rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--warm);
+      text-decoration: none;
+    }
+
+    /* ── HERO ── */
+    header {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(196,149,106,.10) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 50% at 10% 80%, rgba(140,123,107,.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* decorative lines */
+    .hero-bg::before, .hero-bg::after {
+      content: '';
+      position: absolute;
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-bg::before {
+      width: 600px; height: 600px;
+      right: -200px; top: -100px;
+    }
+    .hero-bg::after {
+      width: 350px; height: 350px;
+      left: -80px; bottom: -50px;
+    }
+
+    .hero-inner {
+      max-width: 780px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-eyebrow {
+      font-size: .75rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 400;
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp .8s .2s forwards;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 9vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      opacity: 0;
+      animation: fadeUp .9s .35s forwards;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-tagline {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: var(--warm);
+      font-weight: 300;
+      margin: 1.6rem 0 2.4rem;
+      letter-spacing: .01em;
+      opacity: 0;
+      animation: fadeUp .8s .5s forwards;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: .9rem 2rem;
+      justify-content: center;
+      font-size: .82rem;
+      color: var(--warm);
+      letter-spacing: .04em;
+      opacity: 0;
+      animation: fadeUp .8s .65s forwards;
+    }
+    .hero-meta span { display: flex; align-items: center; gap: .4rem; }
+    .hero-meta span::before {
+      content: '';
+      display: inline-block;
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .hero-meta a { color: inherit; text-decoration: none; }
+    .hero-meta a:hover { color: var(--ink); }
+
+    .hero-cta {
+      margin-top: 2.8rem;
+      opacity: 0;
+      animation: fadeUp .8s .8s forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .55rem;
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: .8rem 2rem;
+      border: 1.5px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn:hover { background: var(--ink); color: var(--cream); }
+    .btn svg { flex-shrink: 0; }
+
+    /* ── SECTION WRAPPER ── */
+    main { max-width: 900px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    section { padding-top: var(--section-gap); opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    section.visible { opacity: 1; transform: translateY(0); }
+
+    .section-label {
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: .6rem;
+    }
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.9rem, 5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 2.5rem;
+    }
+    .rule { width: 40px; height: 1.5px; background: var(--accent); margin: 1rem 0 2.5rem; }
+
+    /* ── CARDS ── */
+    .card-list { display: flex; flex-direction: column; gap: 2rem; }
+    .card {
+      padding: 2rem 2.2rem;
+      border: 1px solid var(--rule);
+      background: #fff;
+      position: relative;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .card:hover { border-color: var(--accent); box-shadow: 4px 4px 0 var(--rule); }
+    .card-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: .5rem; margin-bottom: .9rem; }
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: var(--ink); }
+    .card-org { font-size: .82rem; color: var(--accent); font-weight: 400; letter-spacing: .04em; }
+    .card-meta { font-size: .75rem; color: var(--warm); letter-spacing: .06em; text-align: right; }
+    .card-meta .location { display: block; }
+    .card-meta .dates { display: block; }
+    .card ul { list-style: none; padding: 0; margin-top: .8rem; }
+    .card ul li { font-size: .88rem; color: #444; padding: .25rem 0 .25rem 1.2rem; position: relative; }
+    .card ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+
+    /* ── SKILLS GRID ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .skill-pill {
+      padding: .9rem 1.3rem;
+      border: 1px solid var(--rule);
+      background: #fff;
+      font-size: .84rem;
+      color: var(--ink);
+      letter-spacing: .02em;
+      display: flex; align-items: center; gap: .7rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .skill-pill:hover { border-color: var(--accent); transform: translateX(4px); }
+    .skill-pill::before { content: ''; display: block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+    /* ── REFERENCES ── */
+    .refs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; }
+    .ref-card {
+      padding: 1.8rem 2rem;
+      border: 1px solid var(--rule);
+      background: #fff;
+      transition: border-color .2s;
+    }
+    .ref-card:hover { border-color: var(--accent); }
+    .ref-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; }
+    .ref-phone { font-size: .83rem; color: var(--warm); }
+    .ref-phone a { color: inherit; text-decoration: none; }
+    .ref-phone a:hover { color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      font-size: .78rem;
+      color: var(--warm);
+      letter-spacing: .05em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      nav { padding: 1rem 1.4rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      main { padding: 0 1.2rem 4rem; }
+      .card { padding: 1.4rem 1.4rem; }
+      .card-meta { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">L. Bartholomew</a>
+  <ul class="nav-links">
+   <li><a href="index.html">Go Home</a></li> 
+   <li><a href="#education">Education</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#leadership">Leadership</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#references">References</a></li>
+    
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#education" onclick="closeMobile()">Education</a>
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#leadership" onclick="closeMobile()">Leadership</a>
+  <a href="#skills" onclick="closeMobile()">Skills</a>
+  <a href="#references" onclick="closeMobile()">References</a>
+</div>
+
+<!-- HERO -->
+<header id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Résumé</p>
+    <h1>Luke <em>Bartholomew</em></h1>
+    <p class="hero-tagline">Aspiring Business Professional &amp; Dedicated Leader</p>
+    <div class="hero-meta">
+      <span>American Fork, Utah</span>
+      <span><a href="tel:8012092959">(801) 209-2959</a></span>
+      <span><a href="mailto:bartholomewluke@yahoo.com">bartholomewluke@yahoo.com</a></span>
+    </div>
+    <div class="hero-cta">
+      <a href="#" class="btn" onclick="downloadPDF(event)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Résumé
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <p class="section-label">Academic Background</p>
+    <h2>Education</h2>
+    <div class="rule"></div>
+    <div class="card-list">
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Brigham Young University</div>
+            <div class="card-org">Pre-Business Program — Freshman</div>
+          </div>
+          <div class="card-meta">
+            <span class="location">Provo, UT</span>
+            <span class="dates">Expected Graduation: 2027</span>
+          </div>
+        </div>
+        <ul>
+          <li>Coursework in business fundamentals, critical thinking, and information systems</li>
+          <li>Developed skills in spreadsheet modeling, data analysis, and problem-solving for business scenarios</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">American Fork High School</div>
+            <div class="card-org">Graduated with Honors</div>
+          </div>
+          <div class="card-meta">
+            <span class="location">American Fork, UT</span>
+            <span class="dates">Class of 2023</span>
+          </div>
+        </div>
+        <ul>
+          <li>Participated in high-level academics and extracurriculars, including varsity wrestling</li>
+          <li>Developed strong time management, teamwork, and self-discipline through rigorous commitments</li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- WORK EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label">Professional History</p>
+    <h2>Work Experience</h2>
+    <div class="rule"></div>
+    <div class="card-list">
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">American Fork Parks Department</div>
+            <div class="card-org">Part-Time Employee</div>
+          </div>
+          <div class="card-meta">
+            <span class="location">American Fork, UT</span>
+            <span class="dates">2021 – 2023</span>
+          </div>
+        </div>
+        <ul>
+          <li>Supported daily park operations and maintenance across multiple facilities</li>
+          <li>Delivered high-quality customer service and assisted in event coordination</li>
+          <li>Collaborated with a team to complete projects efficiently and on schedule</li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section id="leadership">
+    <p class="section-label">Service &amp; Leadership</p>
+    <h2>Leadership &amp; Volunteer Experience</h2>
+    <div class="rule"></div>
+    <div class="card-list">
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Assistant to Mission President</div>
+            <div class="card-org">The Church of Jesus Christ of Latter-day Saints — Full-Time Missionary</div>
+          </div>
+          <div class="card-meta">
+            <span class="dates">2023 – 2025</span>
+          </div>
+        </div>
+        <ul>
+          <li>Led and trained 200+ missionaries across multiple locations</li>
+          <li>Coordinated initiatives, organized meetings, and conducted workshops to develop organizational capacity</li>
+          <li>Delivered personalized coaching fostering leadership, communication, and conflict-resolution skills</li>
+          <li>Developed resilience, cultural awareness, and empathy through diverse cross-cultural engagement</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Varsity Wrestling Team</div>
+            <div class="card-org">American Fork High School</div>
+          </div>
+          <div class="card-meta">
+            <span class="location">American Fork, UT</span>
+            <span class="dates">2020 – 2023</span>
+          </div>
+        </div>
+        <ul>
+          <li>Built discipline, grit, and teamwork through intensive training and competitive seasons</li>
+          <li>Mentored teammates and contributed to overall team success and culture</li>
+          <li>Consistently balanced demanding academic, athletic, and extracurricular commitments</li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="section-label">Capabilities</p>
+    <h2>Skills</h2>
+    <div class="rule"></div>
+    <div class="skills-grid">
+      <div class="skill-pill">Leadership &amp; Team Management</div>
+      <div class="skill-pill">Communication &amp; Interpersonal Skills</div>
+      <div class="skill-pill">Problem Solving &amp; Critical Thinking</div>
+      <div class="skill-pill">Resilience, Empathy &amp; Adaptability</div>
+      <div class="skill-pill">Business Analysis &amp; Spreadsheet Modeling</div>
+      <div class="skill-pill">Microsoft Excel &amp; Google Sheets</div>
+      <div class="skill-pill">Event Planning &amp; Coordination</div>
+      <div class="skill-pill">Coaching &amp; Training</div>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section id="references">
+    <p class="section-label">Professional References</p>
+    <h2>References</h2>
+    <div class="rule"></div>
+    <div class="refs-grid">
+      <div class="ref-card">
+        <div class="ref-name">Jason Thompson</div>
+        <div class="ref-phone"><a href="tel:8014040420">(801) 404-0420</a></div>
+      </div>
+      <div class="ref-card">
+        <div class="ref-name">Eric Spencer</div>
+        <div class="ref-phone"><a href="tel:8014005932">(801) 400-5932</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Luke Bartholomew &nbsp;·&nbsp; American Fork, Utah &nbsp;·&nbsp; <a href="mailto:bartholomewluke@yahoo.com" style="color:inherit;text-decoration:none;">bartholomewluke@yahoo.com</a></p>
+</footer>
+
+<script>
+  // Sticky nav shadow
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+  // PDF download — generates a clean print-style PDF via window.print()
+  function downloadPDF(e) {
+    e.preventDefault();
+    const style = document.createElement('style');
+    style.id = 'print-style';
+    style.textContent = `
+      @media print {
+        nav, .hero-cta, .hero-bg, footer { display: none !important; }
+        header { min-height: auto; padding: 2rem 0 1rem; page-break-after: avoid; }
+        h1 { font-size: 2.5rem; }
+        section { opacity: 1 !important; transform: none !important; padding-top: 1.5rem; }
+        body { background: #fff; }
+        .card { break-inside: avoid; }
+      }
+    `;
+    document.head.appendChild(style);
+    window.print();
+    setTimeout(() => document.head.removeChild(style), 500);
+  }
+</script>
+</body>
+</html>
